@@ -34,5 +34,13 @@ function createButton (className) {
 
     return button;
 }
+
+function deleteItem (e) {
+    const item = e.target
+    if (item.tagName == 'I') {
+        item.parentElement.parentElement.remove();
+    }
+}
 // Event listeners
 itemForm.addEventListener('submit', addItem)
+itemList.addEventListener('click', deleteItem)
