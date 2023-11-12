@@ -3,7 +3,7 @@
 This repository contains my implementation of the "Shopping-list" mini-project, part of my learning journey in JavaScript on Udemy with Professor Brad Traversy. The project focuses on applying fundamental JavaScript concepts to create a simple and interactive shopping list application.
 
 ## Project Features:
-. Add Items: Easily add items to your shopping list.
+. Add Items: Easily add items to your shopping list.\n
 . Remove Items: Remove items from the list with a single click.
 . Mark as Completed: Mark items as completed when you've purchased them.
 . Persistent Data: The shopping list data is stored locally, ensuring your list is available even after a page refresh.
