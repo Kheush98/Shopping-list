@@ -5,7 +5,7 @@ const clearBtn = document.getElementById('clear')
 const itemFilter = document.getElementById('filter')
 
 
-function addItem (e) {
+function onAddItemSubmit (e) {
     e.preventDefault();
     const newItem = itemInput.value
     // Validate input
@@ -13,17 +13,41 @@ function addItem (e) {
         alert('Please add an item')
         return;
     }
-    // Create list item
+    
+
+    // Add item to the DOM
+    addItemInDOM(newItem);
+    
+    // Add item to the storage
+    addItemInLocalStorage(newItem);
+    checkUI();
+    itemInput.value = ''
+}
+
+function addItemInDOM (item) {
     const li = document.createElement('li');
-    li.appendChild(document.createTextNode(newItem))
+    li.appendChild(document.createTextNode(item))
 
     const button = createButton('remove-item btn-link text-red')
-   
+    
     li.appendChild(button)
     // Add item
     itemList.append(li)
-    checkUI();
-    itemInput.value = ''
+}
+
+function addItemInLocalStorage(item) {
+    let itemLocalStorage;
+
+    if (localStorage.getItem('items') === null) {
+        itemLocalStorage = [];
+    } else {
+        itemLocalStorage = JSON.parse(localStorage.getItem('items'))
+    }
+
+    itemLocalStorage.push(item)
+    
+    // COnvert to JSON string and set to local storage
+    localStorage.setItem('items', JSON.stringify(itemLocalStorage))
 }
 
 function createButton (className) {
@@ -72,7 +96,7 @@ function filterItem (e) {
 
     items.forEach(item => {
         const itemName = item.firstChild.textContent.toLowerCase()
-        
+
         if (!itemName.includes(filterValue)) {
             item.style.display = 'none'
         } else {
@@ -80,10 +104,20 @@ function filterItem (e) {
         }
     })
 }
+
+function diplayItemsFromStorage () {
+    const itemFromStorage = JSON.parse(localStorage.getItem('items'))
+
+    itemFromStorage.forEach(item => {
+        addItemInDOM(item)
+    })
+    checkUI()
+}
 // Event listeners
-itemForm.addEventListener('submit', addItem)
+itemForm.addEventListener('submit', onAddItemSubmit)
 itemList.addEventListener('click', deleteItem)
 clearBtn.addEventListener('click', clearItem)
 itemFilter.addEventListener('input', filterItem)
 
 checkUI()
+diplayItemsFromStorage()
