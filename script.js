@@ -38,10 +38,10 @@ function addItemInDOM (item) {
 function addItemInLocalStorage(item) {
     const itemsFromStorage = getItemFromStorage()
 
-    itemLocalStorage.push(item)
+    itemsFromStorage.push(item)
     
     // COnvert to JSON string and set to local storage
-    localStorage.setItem('items', JSON.stringify(itemLocalStorage))
+    localStorage.setItem('items', JSON.stringify(itemsFromStorage))
 }
 
 function getItemFromStorage () {
@@ -68,11 +68,19 @@ function createButton (className) {
     return button;
 }
 
-function deleteItem (e) {
-    const item = e.target
-    if (item.tagName == 'I' && confirm("Are you sure ?")) {
-        item.parentElement.parentElement.remove();
-        removeItemFromStorage()           
+function onClickItem(e) {
+    if (e.target.parentElement.classList.contains('remove-item')) {
+        removeItem(e.target.parentElement.parentElement)           
+    }
+}
+
+function removeItem(item) {
+    if (confirm("Are you sure ?")) {
+        // remove item from DOM
+        item.remove()
+
+        // Remove item from storage
+        removeItemFromStorage(item.textContent)
         checkUI()
     }
 }
@@ -81,6 +89,8 @@ function clearItem () {
     while (itemList.firstChild) {
         itemList.removeChild(itemList.firstChild)
     }
+
+    localStorage.removeItem('items')
     checkUI()
 }
 
@@ -122,20 +132,18 @@ function diplayItemsFromStorage () {
 }
 
 function removeItemFromStorage(value) {
-    const itemFromStorage = getItemFromStorage()
+    let itemFromStorage = getItemFromStorage()
 
-    itemFromStorage.forEach(item => {
-        if (item === value) {
-            
-        }
-    })
+    itemFromStorage = itemFromStorage.filter(i => i !== value)
+
+    localStorage.setItem('items', JSON.stringify(itemFromStorage))
 }
 
 // Initialize app
 function init() {
     // Event listeners
     itemForm.addEventListener('submit', onAddItemSubmit)
-    itemList.addEventListener('click', deleteItem)
+    itemList.addEventListener('click', onClickItem)
     clearBtn.addEventListener('click', clearItem)
     itemFilter.addEventListener('input', filterItem)
     document.addEventListener('DOMContentLoaded', diplayItemsFromStorage)
