@@ -36,6 +36,15 @@ function addItemInDOM (item) {
 }
 
 function addItemInLocalStorage(item) {
+    const itemsFromStorage = getItemFromStorage()
+
+    itemLocalStorage.push(item)
+    
+    // COnvert to JSON string and set to local storage
+    localStorage.setItem('items', JSON.stringify(itemLocalStorage))
+}
+
+function getItemFromStorage () {
     let itemLocalStorage;
 
     if (localStorage.getItem('items') === null) {
@@ -44,10 +53,7 @@ function addItemInLocalStorage(item) {
         itemLocalStorage = JSON.parse(localStorage.getItem('items'))
     }
 
-    itemLocalStorage.push(item)
-    
-    // COnvert to JSON string and set to local storage
-    localStorage.setItem('items', JSON.stringify(itemLocalStorage))
+    return itemLocalStorage
 }
 
 function createButton (className) {
@@ -65,7 +71,8 @@ function createButton (className) {
 function deleteItem (e) {
     const item = e.target
     if (item.tagName == 'I' && confirm("Are you sure ?")) {
-        item.parentElement.parentElement.remove();           
+        item.parentElement.parentElement.remove();
+        removeItemFromStorage()           
         checkUI()
     }
 }
@@ -106,18 +113,34 @@ function filterItem (e) {
 }
 
 function diplayItemsFromStorage () {
-    const itemFromStorage = JSON.parse(localStorage.getItem('items'))
+    const itemFromStorage = getItemFromStorage()
 
     itemFromStorage.forEach(item => {
         addItemInDOM(item)
     })
     checkUI()
 }
-// Event listeners
-itemForm.addEventListener('submit', onAddItemSubmit)
-itemList.addEventListener('click', deleteItem)
-clearBtn.addEventListener('click', clearItem)
-itemFilter.addEventListener('input', filterItem)
 
-checkUI()
-diplayItemsFromStorage()
+function removeItemFromStorage(value) {
+    const itemFromStorage = getItemFromStorage()
+
+    itemFromStorage.forEach(item => {
+        if (item === value) {
+            
+        }
+    })
+}
+
+// Initialize app
+function init() {
+    // Event listeners
+    itemForm.addEventListener('submit', onAddItemSubmit)
+    itemList.addEventListener('click', deleteItem)
+    clearBtn.addEventListener('click', clearItem)
+    itemFilter.addEventListener('input', filterItem)
+    document.addEventListener('DOMContentLoaded', diplayItemsFromStorage)
+    
+    checkUI()
+}
+
+init();
