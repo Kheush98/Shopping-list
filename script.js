@@ -12,7 +12,7 @@ function onAddItemSubmit (e) {
     const newItem = itemInput.value
     // Validate input
     if (newItem.trim() === '') {
-        alert('Please add an item')
+        alert('Ajouter un article s\'il vous plait')
         return;
     }
     
@@ -26,7 +26,7 @@ function onAddItemSubmit (e) {
         isEditMode = false
 
     } else if (checkIfItemExists(newItem)) {
-            alert('That item already exists')
+            alert('Cet article existe déja')
             return;
     }
 
@@ -113,7 +113,7 @@ function setItemToEdit(item) {
 }
 
 function removeItem(item) {
-    if (confirm(`Are you sure to remove ${item.textContent}?`)) {
+    if (confirm(`Vous êtes sûr de vouloir supprimer ${item.textContent}?`)) {
         // remove item from DOM
         item.remove()
 
