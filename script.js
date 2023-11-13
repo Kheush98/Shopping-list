@@ -3,6 +3,8 @@ const itemInput = document.getElementById('item-input')
 const itemList = document.getElementById('item-list')
 const clearBtn = document.getElementById('clear')
 const itemFilter = document.getElementById('filter')
+const addItemBtn = document.querySelector('.btn')
+let isEditMode = false
 
 
 function onAddItemSubmit (e) {
@@ -14,6 +16,15 @@ function onAddItemSubmit (e) {
         return;
     }
     
+    // Check if is the edit mode
+    if (isEditMode) {
+        const itemToEdit = itemList.querySelector('.edit-mode')
+
+        removeItemFromStorage(itemToEdit.textContent)
+        itemToEdit.remove()
+        itemToEdit.classList.remove('edit-mode')
+        isEditMode = false
+    }
 
     // Add item to the DOM
     addItemInDOM(newItem);
@@ -72,10 +83,26 @@ function onClickItem(e) {
     if (e.target.parentElement.classList.contains('remove-item')) {
         removeItem(e.target.parentElement.parentElement)           
     }
+    
+    if (e.target.tagName === 'LI') {
+        setItemToEdit(e.target)
+    }
+
+}
+
+function setItemToEdit(item) {
+    isEditMode = true
+    itemList.querySelectorAll('li').forEach(i => i.classList.remove('edit-mode'))
+    item.classList.add('edit-mode')
+    itemInput.value = item.textContent
+
+    addItemBtn.innerHTML = '<i class="fa-solid fa-pen"></i> Update Item'
+    addItemBtn.style.backgroundColor = '#228B22'
+
 }
 
 function removeItem(item) {
-    if (confirm("Are you sure ?")) {
+    if (confirm(`Are you sure to remove ${item.textContent}?`)) {
         // remove item from DOM
         item.remove()
 
@@ -90,21 +117,9 @@ function clearItem () {
         itemList.removeChild(itemList.firstChild)
     }
 
+    // Clear Item
     localStorage.removeItem('items')
     checkUI()
-}
-
-function checkUI () {
-    const items = itemList.querySelectorAll('li');
-    if (items.length === 0) {
-        itemFilter.style.display = 'none'
-        clearBtn.style.display = 'none'
-    } else {
-        itemFilter.style.display = 'block'
-        clearBtn.style.display = 'block'
-    }
-
-
 }
 
 function filterItem (e) {
@@ -137,6 +152,21 @@ function removeItemFromStorage(value) {
     itemFromStorage = itemFromStorage.filter(i => i !== value)
 
     localStorage.setItem('items', JSON.stringify(itemFromStorage))
+}
+
+function checkUI () {
+    const items = itemList.querySelectorAll('li');
+    if (items.length === 0) {
+        itemFilter.style.display = 'none'
+        clearBtn.style.display = 'none'
+    } else {
+        itemFilter.style.display = 'block'
+        clearBtn.style.display = 'block'
+    }
+
+    addItemBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Add Item'
+    addItemBtn.style.backgroundColor = '#333'
+
 }
 
 // Initialize app
