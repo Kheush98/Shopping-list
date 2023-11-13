@@ -175,7 +175,7 @@ function checkUI () {
         clearBtn.style.display = 'block'
     }
 
-    addItemBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Ajouter un article'
+    addItemBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Ajouter l\'article'
     addItemBtn.style.backgroundColor = '#333'
 
 }
