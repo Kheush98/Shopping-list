@@ -107,7 +107,7 @@ function setItemToEdit(item) {
     item.classList.add('edit-mode')
     itemInput.value = item.textContent
 
-    addItemBtn.innerHTML = '<i class="fa-solid fa-pen"></i> Update Item'
+    addItemBtn.innerHTML = '<i class="fa-solid fa-pen"></i> Modifier l\'article'
     addItemBtn.style.backgroundColor = '#228B22'
 
 }
